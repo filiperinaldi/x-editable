@@ -594,12 +594,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                         var editable = $elems.data('editable');
                         //standard params
                         var params = {
-                            name: editable.options.name || '',
-                            value: editable.input.value2submit(editable.value),
                             pk: (typeof editable.options.pk === 'function') ? 
                                 editable.options.pk.call(editable.options.scope) : 
                                 editable.options.pk 
                         };
+                        if(editable.options.serializer === 'MultiNameValue') {
+                            params['name'] = editable.options.name || '';
+                            params['value'] = editable.input.value2submit(editable.value);
+                        } else if(editable.options.serializer === 'SingleNameValue') {
+                            if (editable.options.name) {
+                                params[editable.options.name] = editable.input.value2submit(editable.value);
+                            }
+                        } else {
+                            throw "Invalid serializer";
+                        }
 
                         //additional params
                         if(typeof editable.options.params === 'function') {
@@ -687,6 +695,47 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
 
     $.fn.editable.defaults = {
+        /**
+        Type of serializer. Can be <code>SingleNameValue|MultiNameValue</code>
+        Where:
+        <code>SingleNameValue</code> produces a single "<name>:<value>" entry.
+        <code>MultiNameValue</code> produces "name:<name>, value:<value>" entries.
+        @example:
+        SingleNameValue:
+         $('#colour').editable({
+            type: 'text',
+                pk: 1,
+                url: '/post',
+                title: 'Colour'
+                name: 'colour',
+        });
+        Result:
+        {
+            colour: yellow',
+            pk: 1,
+        }
+
+        MultiNameValue:
+        $('#colour').editable({
+            type: 'text',
+                pk: 1,
+                url: '/post',
+                title: 'Colour'
+                name: 'colour',
+        });
+        Result:
+        {
+            name: 'colour',
+            value: 'yellow',
+            pk: 1,
+        }
+
+        @property serializer
+        @type string
+        @default 'MultiNameValue'
+        **/
+        serializer: 'MultiNameValue',
+
         /**
         Type of input. Can be <code>text|textarea|select|date|checklist</code> and more
 

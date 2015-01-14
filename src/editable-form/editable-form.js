@@ -314,10 +314,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 //standard params
                 params = {
-                    name: this.options.name || '',
-                    value: submitValue,
                     pk: pk 
                 };
+                if(this.options.serializer === 'MultiNameValue') {
+                    params['name'] = this.options.name || '';
+                    params['value'] = submitValue;
+                } else if(this.options.serializer === 'SingleNameValue') {
+                    params[this.options.name] = submitValue;
+                } else {
+                    throw "Invalid serializer";
+                }
 
                 //additional params
                 if(typeof this.options.params === 'function') {
