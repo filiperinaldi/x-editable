@@ -110,7 +110,7 @@ $(function(){
                    var text = escape ? $.fn.editableutils.escape(v.text) : v.text; 
                    html.push(text); 
                });
-               $(element).html(html.join('<br>'));
+               $(element).html(html.join(this.options.separatorTemplate));
            } else {
                $(element).empty(); 
            }
@@ -150,7 +150,16 @@ $(function(){
         @type string
         @default ','
         **/         
-        separator: ','
+        separator: ',',
+
+        /**
+        Separator of values when showing the current values
+
+        @property separatorTemplate
+        @type string
+        @default '<br>'
+        **/
+        separatorTemplate: '<br>',
     });
 
     $.fn.editabletypes.checklist = Checklist;      
