@@ -1,3 +1,14 @@
+TODO:
+- Add check to ensure options.name is set when serializer == SingleNameValue is selected.
+- Add support for Django's CSRF natively.
+- Make the dashed style optional
+- Improve default style of the Save/Cancel buttons
+- Add support for rendering error/success messages
+- Remove support for Bootstrap2.x and JQueryUI
+- Add support for FuelUX
+
+Original README from X-editable:
+
 # X-editable
 
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
